@@ -178,7 +178,11 @@ class HA_CL_CBS {
       return m_env.admissibleHeuristic(s);
     }
 
-    bool isSolution(const State& s) { return m_env.isSolution(s); }
+    bool isSolution(const State& s, Cost g,
+                    std::unordered_map<State, std::tuple<State, Action, Cost, Cost>,
+                                       std::hash<State>>& camefrom) {
+      return m_env.isSolution(s, g, camefrom);
+    }
 
     void getNeighbors(const State& s, Action act,
                       std::vector<Neighbor<State, Action, Cost>>& neighbors) {

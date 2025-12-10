@@ -188,7 +188,7 @@ int main(int argc, char* argv[]) {
   HA_CL_CBS<Location, Action, double> solver(mapf, fleet_registry);
 
   std::cout << "\nCalculating Solution...\n";
-  libMultiRobotPlanning::Timer timer;
+  Timer timer;
   std::vector<PlanResult<State, Action, double>> solution;
   bool success = solver.search(startStates, solution);
   timer.stop();

@@ -25,7 +25,7 @@ def load_config(config_file):
             if 'robot_types' in config:
                 for rtype, params in config['robot_types'].items():
                     if rtype not in ROBOT_TYPES:
-                        ROBOT_TYPES[rtype] = {}
+                        ROBOT_TYPES[rtype] = {'color': 'blue'}  # Default color
                     ROBOT_TYPES[rtype].update({
                         'width': params.get('width', 1.0),
                         'LF': params.get('LF', 1.0),
@@ -128,11 +128,11 @@ def visualize_static(map_file, config_file=None):
     # Add legend
     legend_elements = []
     for rtype, params in ROBOT_TYPES.items():
-        if 'color' in params:
-            legend_elements.append(
-                plt.Rectangle((0, 0), 1, 1, fc=params['color'], 
-                            label=f"{rtype} (R={params.get('R_min', 'N/A')}m)")
-            )
+        color = params.get('color', 'blue')
+        legend_elements.append(
+            plt.Rectangle((0, 0), 1, 1, fc=color, 
+                        label=f"{rtype} (R={params.get('R_min', 'N/A')}m)")
+        )
     ax.legend(handles=legend_elements, loc='upper right', fontsize=10)
     
     plt.tight_layout()

@@ -93,9 +93,11 @@ struct State {
       return pow(this->x - other.x, 2) + pow(this->y - other.y, 2) < 
              pow(this_radius + other_radius, 2);
     }
-    // Fallback to default collision check
+    // Fallback to default collision check using diagonal radius
+    double default_radius = sqrt(pow(Constants::LF + Constants::LB, 2) + 
+                                pow(Constants::carWidth, 2)) / 2.0;
     return pow(this->x - other.x, 2) + pow(this->y - other.y, 2) < 
-           pow(2 * Constants::LF, 2) + pow(Constants::carWidth, 2);
+           pow(2 * default_radius, 2);
   }
 
   bool obsCollision(const Location& obstacle, const FleetRegistry* registry = nullptr) const {
@@ -250,7 +252,7 @@ FleetRegistry loadRobotTypes(const std::string& config_file) {
     config = YAML::LoadFile(config_file);
   } catch (std::exception& e) {
     std::cerr << "\033[1m\033[33mWARNING: Failed to load config file: "
-              << config_file << "\033[0m, using default params.\n";
+              << config_file << "\033[0m. Cannot proceed without configuration.\n";
     return registry;
   }
   
@@ -280,7 +282,14 @@ void registerAgentsFromYAML(FleetRegistry& registry,
     
     if (!robot_types[type]) {
       std::cerr << "\033[1m\033[33mWARNING: Robot type '" << type 
-                << "' not found, using STANDARD\033[0m\n";
+                << "' not found";
+      // Check if STANDARD exists as fallback
+      if (!robot_types["STANDARD"]) {
+        std::cerr << ", and STANDARD type not defined. Skipping agent.\033[0m\n";
+        agent_id++;
+        continue;
+      }
+      std::cerr << ", using STANDARD\033[0m\n";
       type = "STANDARD";
     }
     

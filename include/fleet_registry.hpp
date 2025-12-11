@@ -13,6 +13,12 @@
 #include <string>
 #include <stdexcept>
 
+namespace Constants {
+// Capability score weights
+static const double CAPABILITY_SIZE_WEIGHT = 0.6;
+static const double CAPABILITY_RMIN_WEIGHT = 0.4;
+}  // namespace Constants
+
 namespace libMultiRobotPlanning {
 
 /**
@@ -96,8 +102,8 @@ class FleetRegistry {
   double GetCapabilityScore(size_t agent_id) const {
     const auto& params = GetParams(agent_id);
     // Weighted combination: size (60%) + turning constraint (40%)
-    return 0.6 * (params.LF + params.LB) * params.width_W + 
-           0.4 * params.R_min;
+    return Constants::CAPABILITY_SIZE_WEIGHT * (params.LF + params.LB) * params.width_W + 
+           Constants::CAPABILITY_RMIN_WEIGHT * params.R_min;
   }
   
   /**

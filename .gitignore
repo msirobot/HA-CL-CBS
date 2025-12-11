@@ -15,6 +15,7 @@ build/
 # Output files
 *.yaml.output
 output.yaml
+output_heterogeneous.yaml
 
 # Python cache
 __pycache__/
@@ -30,3 +31,6 @@ Makefile
 # Doxygen
 docs/html/
 docs/latex/
+
+# Generated visualizations
+*_heterogeneous.png

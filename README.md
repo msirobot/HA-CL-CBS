@@ -61,7 +61,15 @@ make -j8
 ### Visualize Results
 ```bash
 # make sure your are in build folder
+
+# Visualize homogeneous CL-CBS results
 python3 ../src/visualize.py -m  ../benchmark/map100by100/agents20/obstacle/map_100by100_obst50_agents20_ex13.yaml  -s output.yaml
+
+# Visualize heterogeneous HA-CL-CBS results
+cd ..
+MPLBACKEND=Agg python3 src/visualize_heterogeneous.py \
+    -m benchmark/heterogeneous/mixed_fleet_test.yaml \
+    -c src/heterogeneous_config.yaml
 ```
 
 ### Agent Configuration
